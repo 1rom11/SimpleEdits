@@ -3,13 +3,13 @@
 	"id": "simpleedits",
 	"version": "${version}",
 	"name": "Simple Edits",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "A easy and fast way to make quick changes to your building!",
 	"authors": [
-		"Me!"
+		"Romit Das"
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"sources": "https://github.com/1rom11/SimpleEdits"
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/simpleedits/icon.png",
@@ -20,6 +20,9 @@
 		],
 		"fabric-datagen": [
 			"net.romit.simpleedits.SimpleEditsDataGenerator"
+		],
+		"client": [
+			"net.romit.simpleedits.SimpleEditsModClient"
 		]
 	},
 	"mixins": [
