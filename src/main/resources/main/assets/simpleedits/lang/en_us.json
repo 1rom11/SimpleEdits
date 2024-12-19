@@ -1,0 +1,9 @@
+{
+  "itemgroup.simpleedits.tools" : "Simple Edit Tools",
+  "item.simpleedits.chisel": "Chisel",
+  "tooltip.simpleedits.chisel": "Makes blocks chiseled!",
+  "tooltip.simpleedits.chisel.shift down": "Some are Stone, Sandstone, Tuff, e.t.c",
+  "item.simpleedits.lighter": "Modifer",
+  "tooltip.simpleedits.lighter": "Modifies some blocks",
+  "tooltip.simpleedits.lighter.shift_down": "Pistons can be open or closed, lamps can be turned on, can light campfires, e.t.c"
+}

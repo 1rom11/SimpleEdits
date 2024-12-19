@@ -16,16 +16,36 @@ import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.world.World;
 
+import java.util.AbstractMap;
 import java.util.List;
 import java.util.Map;
 
 public class ChiselItem extends Item {
-
-    public static final Map<Block, Block> CHISEL_MAP = Map.of(
-            Blocks.STONE, Blocks.STONE_BRICKS,
-            Blocks.END_STONE, Blocks.END_STONE_BRICKS,
-            Blocks.GOLD_BLOCK, Blocks.NETHERITE_BLOCK
-    );
+    public static final Map<Block, Block> CHISEL_MAP = Map.ofEntries(
+            new AbstractMap.SimpleEntry<>(Blocks.STONE, Blocks.STONE_BRICKS),
+            new AbstractMap.SimpleEntry<>(Blocks.STONE_BRICKS, Blocks.CHISELED_STONE_BRICKS),
+            new AbstractMap.SimpleEntry<>(Blocks.DEEPSLATE, Blocks.CHISELED_DEEPSLATE),
+            new AbstractMap.SimpleEntry<>(Blocks.TUFF, Blocks.CHISELED_TUFF),
+            new AbstractMap.SimpleEntry<>(Blocks.TUFF_BRICKS, Blocks.CHISELED_TUFF_BRICKS),
+            new AbstractMap.SimpleEntry<>(Blocks.SANDSTONE, Blocks.CHISELED_SANDSTONE),
+            new AbstractMap.SimpleEntry<>(Blocks.RED_SANDSTONE, Blocks.CHISELED_RED_SANDSTONE),
+            new AbstractMap.SimpleEntry<>(Blocks.NETHER_BRICKS, Blocks.CHISELED_NETHER_BRICKS),
+            new AbstractMap.SimpleEntry<>(Blocks.POLISHED_BLACKSTONE, Blocks.CHISELED_POLISHED_BLACKSTONE),
+            new AbstractMap.SimpleEntry<>(Blocks.QUARTZ_BLOCK, Blocks.CHISELED_QUARTZ_BLOCK),
+            new AbstractMap.SimpleEntry<>(Blocks.COPPER_BLOCK, Blocks.CHISELED_COPPER),
+            new AbstractMap.SimpleEntry<>(Blocks.EXPOSED_COPPER, Blocks.EXPOSED_CHISELED_COPPER),
+            new AbstractMap.SimpleEntry<>(Blocks.WEATHERED_COPPER, Blocks.WEATHERED_CHISELED_COPPER),
+            new AbstractMap.SimpleEntry<>(Blocks.OXIDIZED_COPPER, Blocks.OXIDIZED_CHISELED_COPPER),
+            new AbstractMap.SimpleEntry<>(Blocks.WAXED_COPPER_BLOCK, Blocks.WAXED_CHISELED_COPPER),
+            new AbstractMap.SimpleEntry<>(Blocks.WAXED_EXPOSED_COPPER, Blocks.WAXED_CHISELED_COPPER),
+            new AbstractMap.SimpleEntry<>(Blocks.WAXED_WEATHERED_COPPER, Blocks.WAXED_WEATHERED_CHISELED_COPPER),
+            new AbstractMap.SimpleEntry<>(Blocks.WAXED_OXIDIZED_COPPER, Blocks.WAXED_OXIDIZED_CHISELED_COPPER),
+            //Slabs
+            new AbstractMap.SimpleEntry<>(Blocks.STONE_SLAB, Blocks.STONE_BRICK_SLAB),
+            new AbstractMap.SimpleEntry<>(Blocks.TUFF_SLAB, Blocks.TUFF_BRICK_SLAB),
+            new AbstractMap.SimpleEntry<>(Blocks.PRISMARINE_SLAB, Blocks.PRISMARINE_BRICK_SLAB),
+            new AbstractMap.SimpleEntry<>(Blocks.BLACKSTONE_SLAB, Blocks.POLISHED_BLACKSTONE_SLAB)
+            );
 
     public ChiselItem(Settings settings) {
         super(settings);

@@ -16,6 +16,7 @@ public class ModItemGroups {
                     .displayName(Text.translatable("itemgroup.simpleedits.tools"))
                     .entries((displayContext, entries) -> {
                         entries.add(ModItems.CHISEL);
+                        entries.add(ModItems.LIGHTER);
                         entries.add(ModItems.WAND);
                     }).build());
 
