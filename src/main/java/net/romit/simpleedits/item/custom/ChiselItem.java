@@ -15,6 +15,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.world.World;
+import net.romit.simpleedits.component.ModDataComponentTypes;
 
 import java.util.AbstractMap;
 import java.util.List;
@@ -65,6 +66,7 @@ public class ChiselItem extends Item {
 
 
                 world.playSound(null, context.getBlockPos(), SoundEvents.BLOCK_ANVIL_HIT, SoundCategory.BLOCKS);
+                context.getStack().set(ModDataComponentTypes.COORDINATES, context.getBlockPos());
             }
         }
 
@@ -78,6 +80,10 @@ public class ChiselItem extends Item {
             tooltip.add(Text.translatable("tooltip.simpleedits.chisel.shift_down"));
         } else {
             tooltip.add(Text.translatable("tooltip.simpleedits.chisel"));
+        }
+
+        if (stack.get(ModDataComponentTypes.COORDINATES) != null) {
+            tooltip.add(Text.literal("Last Block changed at " + stack.get(ModDataComponentTypes.COORDINATES)));
         }
         super.appendTooltip(stack, context, tooltip, type);
     }
