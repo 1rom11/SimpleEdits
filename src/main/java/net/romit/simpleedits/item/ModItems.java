@@ -12,7 +12,7 @@ import net.romit.simpleedits.item.custom.WandItem;
 
 public class ModItems {
     public static final Item CHISEL = registerItem("chisel", new ChiselItem(new Item.Settings().maxDamage(32)));
-    public static final Item WAND = registerItem("wand", new WandItem(new Item.Settings().maxDamage(32)));
+    public static final Item WAND = registerItem("wand", new WandItem(new Item.Settings().maxDamage(64)));
 
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registries.ITEM, Identifier.of(SimpleEdits.MOD_ID, name), item);

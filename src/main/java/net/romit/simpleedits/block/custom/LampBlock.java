@@ -26,6 +26,7 @@ public class LampBlock extends Block {
         return ActionResult.SUCCESS;
     }
 
+
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(CLICKED);
