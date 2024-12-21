@@ -1,10 +1,12 @@
 package net.romit.simpleedits.item.custom;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -18,9 +20,15 @@ import java.util.UUID;
 
 public class WandItem extends Item {
     public static final Map<UUID, BlockPos[]> playerPositions = new HashMap<>();
+    public static final Map<UUID, String> playerBlockTypes = new HashMap<>();
+    public static final Map<UUID, Map<BlockPos, BlockState>> playerUndoData = new HashMap<>();
 
     public WandItem(Settings settings) {
         super(settings);
+    }
+
+    public static void setBlockType(UUID playerId, String blockType) {
+        playerBlockTypes.put(playerId, blockType);
     }
 
     @Override
@@ -37,7 +45,9 @@ public class WandItem extends Item {
             } else {
                 positions[1] = pos;
                 player.sendMessage(Text.literal("Second position set at: " + pos), false);
-                executeFillCommand(player, positions[0], positions[1]);
+                String blockType = playerBlockTypes.getOrDefault(playerId, "minecraft:air");
+                storeOriginalBlocks(player, positions[0], positions[1]);
+                executeFillCommand(player, positions[0], positions[1], blockType);
                 positions[0] = null; // Clear positions after filling
                 positions[1] = null;
             }
@@ -47,7 +57,37 @@ public class WandItem extends Item {
         return ActionResult.SUCCESS;
     }
 
-    private void executeFillCommand(PlayerEntity player, BlockPos pos1, BlockPos pos2) {
+    private void storeOriginalBlocks(PlayerEntity player, BlockPos pos1, BlockPos pos2) {
+        UUID playerId = player.getUuid();
+        Map<BlockPos, BlockState> originalBlocks = new HashMap<>();
+
+        int x1 = pos1.getX();
+        int y1 = pos1.getY();
+        int z1 = pos1.getZ();
+        int x2 = pos2.getX();
+        int y2 = pos2.getY();
+        int z2 = pos2.getZ();
+
+        int minX = Math.min(x1, x2);
+        int minY = Math.min(y1, y2);
+        int minZ = Math.min(z1, z2);
+        int maxX = Math.max(x1, x2);
+        int maxY = Math.max(y1, y2);
+        int maxZ = Math.max(z1, z2);
+
+        for (int x = minX; x <= maxX; x++) {
+            for (int y = minY; y <= maxY; y++) {
+                for (int z = minZ; z <= maxZ; z++) {
+                    BlockPos pos = new BlockPos(x, y, z);
+                    originalBlocks.put(pos, player.getWorld().getBlockState(pos));
+                }
+            }
+        }
+
+        playerUndoData.put(playerId, originalBlocks);
+    }
+
+    private void executeFillCommand(PlayerEntity player, BlockPos pos1, BlockPos pos2, String blockType) {
         ServerCommandSource source = player.getCommandSource();
         int maxVolume = 32768;
 
@@ -74,26 +114,39 @@ public class WandItem extends Item {
 
                     int volume = (endX - x + 1) * (endY - y + 1) * (endZ - z + 1);
                     if (volume <= maxVolume) {
-                        String command = String.format("/fill %d %d %d %d %d %d air", x, y, z, endX, endY, endZ);
+                        String command = String.format("/fill %d %d %d %d %d %d %s", x, y, z, endX, endY, endZ, blockType);
                         source.getServer().getCommandManager().executeWithPrefix(source, command);
+                    } else {
+                        for (int subX = x; subX <= endX; subX += 8) {
+                            for (int subY = y; subY <= endY; subY += 8) {
+                                for (int subZ = z; subZ <= endZ; subZ += 8) {
+                                    int subEndX = Math.min(subX + 7, endX);
+                                    int subEndY = Math.min(subY + 7, endY);
+                                    int subEndZ = Math.min(subZ + 7, endZ);
+
+                                    String subCommand = String.format("/fill %d %d %d %d %d %d %s", subX, subY, subZ, subEndX, subEndY, subEndZ, blockType);
+                                    source.getServer().getCommandManager().executeWithPrefix(source, subCommand);
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
     }
 
-    @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
-        if (!world.isClient) {
-            UUID playerId = player.getUuid();
-            BlockPos[] positions = playerPositions.get(playerId);
+    public static void undoFillCommand(ServerPlayerEntity player) {
+        UUID playerId = player.getUuid();
+        Map<BlockPos, BlockState> originalBlocks = playerUndoData.get(playerId);
 
-            if (positions != null && positions[0] != null && positions[1] != null) {
-                player.sendMessage(Text.literal("Positions set: " + positions[0] + " and " + positions[1]), false);
-            } else {
-                player.sendMessage(Text.literal("Please set both positions using the wand."), false);
+        if (originalBlocks != null) {
+            for (Map.Entry<BlockPos, BlockState> entry : originalBlocks.entrySet()) {
+                player.getWorld().setBlockState(entry.getKey(), entry.getValue());
             }
+            player.sendMessage(Text.literal("Undo operation completed."), false);
+            playerUndoData.remove(playerId);
+        } else {
+            player.sendMessage(Text.literal("No undo data available."), false);
         }
-        return new TypedActionResult<>(ActionResult.SUCCESS, player.getStackInHand(hand));
     }
 }
