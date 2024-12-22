@@ -5,9 +5,7 @@ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.block.Block;
 import net.romit.simpleedits.item.ModItemGroups;
 import net.romit.simpleedits.item.ModItems;
-import net.romit.simpleedits.util.commands.BlockCommand;
-import net.romit.simpleedits.util.commands.ClearPositionsCommand;
-import net.romit.simpleedits.util.commands.UndoCommand;
+import net.romit.simpleedits.util.commands.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,6 +27,8 @@ public class SimpleEdits implements ModInitializer {
 			BlockCommand.register(dispatcher);
 			UndoCommand.register(dispatcher);
 			ClearPositionsCommand.register(dispatcher);
+			RadiusCommand.register(dispatcher);
+			ShapeCommand.register(dispatcher);
 		});
 
 		LOGGER.info("Initialized!");

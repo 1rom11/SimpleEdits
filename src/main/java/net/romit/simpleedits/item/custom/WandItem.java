@@ -13,8 +13,6 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
@@ -23,6 +21,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
+/**
+ * This class represents a custom item that allows players to fill a region with a specified block type.
+ * The item is used by right-clicking on two blocks to set the region, and then right-clicking again to fill the region.
+ * The item stores the original blocks in the region and allows players to undo the fill operation.
+ */
 
 public class WandItem extends Item {
     public static final Map<UUID, BlockPos[]> playerPositions = new HashMap<>();

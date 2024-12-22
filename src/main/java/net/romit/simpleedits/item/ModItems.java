@@ -7,16 +7,14 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.romit.simpleedits.SimpleEdits;
-import net.romit.simpleedits.item.custom.BlockStateChangerItem;
-import net.romit.simpleedits.item.custom.ChiselItem;
-import net.romit.simpleedits.item.custom.WandItem;
-import net.romit.simpleedits.item.custom.WaterDrainerWandItem;
+import net.romit.simpleedits.item.custom.*;
 
 public class ModItems {
     public static final Item CHISEL = registerItem("chisel", new ChiselItem(new Item.Settings().maxDamage(32)));
     public static final Item WAND = registerItem("wand", new WandItem(new Item.Settings().maxDamage(64)));
     public static final Item WATERDRAINERWAND = registerItem("waterdrainwand", new WaterDrainerWandItem(new Item.Settings().maxDamage(64)));
     public static final Item BLOCKSTATECHANGER = registerItem("blockstatechanger", new BlockStateChangerItem(new Item.Settings().maxDamage(64)));
+    public static final Item SHAPEWAND = registerItem("shapewand", new ShapeItem(new Item.Settings().maxDamage(64)));
 
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registries.ITEM, Identifier.of(SimpleEdits.MOD_ID, name), item);
@@ -30,6 +28,7 @@ public class ModItems {
             entries.add(WAND);
             entries.add(WATERDRAINERWAND);
             entries.add(BLOCKSTATECHANGER);
+            entries.add(SHAPEWAND);
         });
     }
 }

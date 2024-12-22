@@ -14,6 +14,12 @@ import net.minecraft.world.World;
 
 import java.util.*;
 
+/**
+ * This class represents a custom item that allows players to drain water from adjacent blocks.
+ * The item is used by right-clicking on a block, and if the block is water, the water is removed.
+ * The item does not clear water from waterlogged blocks.
+ */
+
 public class WaterDrainerWandItem extends Item {
     public WaterDrainerWandItem(Settings settings) {
         super(settings);

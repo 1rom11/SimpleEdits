@@ -20,6 +20,11 @@ import java.util.AbstractMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class represents a custom item that allows players to chisel certain blocks into a different block.
+ * The item is used by right-clicking on a block, and if the block is chiselable, the block is changed to a chiseled variant.
+ */
+
 public class ChiselItem extends Item {
     public static final Map<Block, Block> CHISEL_MAP = Map.ofEntries(
             new AbstractMap.SimpleEntry<>(Blocks.STONE, Blocks.STONE_BRICKS),
