@@ -1,6 +1,6 @@
 package net.romit.simpleedits.item.custom;
 
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -17,12 +17,15 @@ import net.romit.simpleedits.util.commands.BlockCommand;
 import net.romit.simpleedits.util.commands.RadiusCommand;
 import net.romit.simpleedits.util.commands.ShapeCommand;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import static net.romit.simpleedits.item.custom.WandItem.playerBlockTypes;
 
 public class ShapeItem extends Item {
+    private static final Map<UUID, Map<BlockPos, BlockState>> playerUndoData = new HashMap<>();
 
     public ShapeItem(Settings settings) {
         super(settings);
@@ -44,6 +47,9 @@ public class ShapeItem extends Item {
             String blockType = playerBlockTypes.getOrDefault(playerId, "minecraft:air");
             int radius = RadiusCommand.getRadius(player.getUuid());
             String shape = ShapeCommand.getShape(player.getUuid());
+
+            // Store original blocks
+            storeOriginalBlocks(player, pos, radius, shape);
 
             // Disable command feedback
             boolean originalFeedback = world.getGameRules().getBoolean(GameRules.SEND_COMMAND_FEEDBACK);
@@ -136,28 +142,112 @@ public class ShapeItem extends Item {
     }
 
     private void createTriangle(World world, BlockPos center, String blockType, int radius) {
-    for (int y = 0; y <= radius; y++) {
-        for (int x = -y; x <= y; x++) {
-            int z = radius - y;
-            BlockPos pos = center.add(x, 0, z);
-            world.getServer().getCommandManager().executeWithPrefix(world.getServer().getCommandSource(),
-                    String.format("/setblock %d %d %d %s", pos.getX(), pos.getY(), pos.getZ(), blockType));
-        }
-    }
-}
-
-    private void createHexagon(World world, BlockPos center, String blockType, int radius) {
-    for (int x = -radius; x <= radius; x++) {
-        for (int z = -radius; z <= radius; z++) {
-            if (Math.abs(x) + Math.abs(z) + Math.abs(x + z) <= radius * 2) {
+        for (int y = 0; y <= radius; y++) {
+            for (int x = -y; x <= y; x++) {
+                int z = radius - y;
                 BlockPos pos = center.add(x, 0, z);
                 world.getServer().getCommandManager().executeWithPrefix(world.getServer().getCommandSource(),
                         String.format("/setblock %d %d %d %s", pos.getX(), pos.getY(), pos.getZ(), blockType));
             }
         }
     }
-}
 
+    private void createHexagon(World world, BlockPos center, String blockType, int radius) {
+        for (int x = -radius; x <= radius; x++) {
+            for (int z = -radius; z <= radius; z++) {
+                if (Math.abs(x) + Math.abs(z) + Math.abs(x + z) <= radius * 2) {
+                    BlockPos pos = center.add(x, 0, z);
+                    world.getServer().getCommandManager().executeWithPrefix(world.getServer().getCommandSource(),
+                            String.format("/setblock %d %d %d %s", pos.getX(), pos.getY(), pos.getZ(), blockType));
+                }
+            }
+        }
+    }
+
+    private void storeOriginalBlocks(PlayerEntity player, BlockPos center, int radius, String shape) {
+        UUID playerId = player.getUuid();
+        Map<BlockPos, BlockState> originalBlocks = new HashMap<>();
+
+        switch (shape) {
+            case "square":
+                for (int x = -radius; x <= radius; x++) {
+                    for (int z = -radius; z <= radius; z++) {
+                        BlockPos pos = center.add(x, 0, z);
+                        originalBlocks.put(pos, player.getWorld().getBlockState(pos));
+                    }
+                }
+                break;
+            case "cube":
+                for (int x = -radius; x <= radius; x++) {
+                    for (int y = -radius; y <= radius; y++) {
+                        for (int z = -radius; z <= radius; z++) {
+                            BlockPos pos = center.add(x, y, z);
+                            originalBlocks.put(pos, player.getWorld().getBlockState(pos));
+                        }
+                    }
+                }
+                break;
+            case "sphere":
+                for (int x = -radius; x <= radius; x++) {
+                    for (int y = -radius; y <= radius; y++) {
+                        for (int z = -radius; z <= radius; z++) {
+                            if (x * x + y * y + z * z <= radius * radius) {
+                                BlockPos pos = center.add(x, y, z);
+                                originalBlocks.put(pos, player.getWorld().getBlockState(pos));
+                            }
+                        }
+                    }
+                }
+                break;
+            case "triangle":
+                for (int y = 0; y <= radius; y++) {
+                    for (int x = -y; x <= y; x++) {
+                        int z = radius - y;
+                        BlockPos pos = center.add(x, 0, z);
+                        originalBlocks.put(pos, player.getWorld().getBlockState(pos));
+                    }
+                }
+                break;
+            case "hexagon":
+                for (int x = -radius; x <= radius; x++) {
+                    for (int z = -radius; z <= radius; z++) {
+                        if (Math.abs(x) + Math.abs(z) + Math.abs(x + z) <= radius * 2) {
+                            BlockPos pos = center.add(x, 0, z);
+                            originalBlocks.put(pos, player.getWorld().getBlockState(pos));
+                        }
+                    }
+                }
+                break;
+            case "circle":
+            default:
+                for (int x = -radius; x <= radius; x++) {
+                    for (int z = -radius; z <= radius; z++) {
+                        if (x * x + z * z <= radius * radius) {
+                            BlockPos pos = center.add(x, 0, z);
+                            originalBlocks.put(pos, player.getWorld().getBlockState(pos));
+                        }
+                    }
+                }
+                break;
+        }
+
+        playerUndoData.put(playerId, originalBlocks);
+    }
+
+    public static void undoShapeCommand(PlayerEntity player) {
+        UUID playerId = player.getUuid();
+        Map<BlockPos, BlockState> originalBlocks = playerUndoData.get(playerId);
+
+        if (originalBlocks != null) {
+            for (Map.Entry<BlockPos, BlockState> entry : originalBlocks.entrySet()) {
+                player.getWorld().setBlockState(entry.getKey(), entry.getValue());
+            }
+            player.sendMessage(Text.literal("Undo operation completed."), false);
+            playerUndoData.remove(playerId);
+        } else {
+            player.sendMessage(Text.literal("No undo data available."), false);
+        }
+    }
 
     @Override
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
