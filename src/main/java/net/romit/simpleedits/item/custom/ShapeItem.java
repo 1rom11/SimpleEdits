@@ -161,7 +161,7 @@ public class ShapeItem extends Item {
 
     @Override
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
-        tooltip.add(Text.translatable("tooltip.simpleedits.shape.tooltip"));
+        tooltip.add(Text.translatable("tooltip.simpleedits.shapewand.tooltip"));
 
         super.appendTooltip(stack, context, tooltip, type);
     }
