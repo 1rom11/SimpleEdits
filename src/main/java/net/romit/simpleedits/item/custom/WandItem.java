@@ -9,11 +9,14 @@ import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
@@ -41,6 +44,7 @@ public class WandItem extends Item {
             UUID playerId = player.getUuid();
             BlockPos pos = context.getBlockPos();
             BlockPos[] positions = playerPositions.getOrDefault(playerId, new BlockPos[2]);
+            World world = context.getWorld();
 
             if (positions[0] == null) {
                 positions[0] = pos;
@@ -53,10 +57,12 @@ public class WandItem extends Item {
                 executeFillCommand(player, positions[0], positions[1], blockType);
                 positions[0] = null; // Clear positions after filling
                 positions[1] = null;
+                world.playSound(null, pos, SoundEvents.BLOCK_BELL_RESONATE, SoundCategory.BLOCKS, 1.0F, 1.0F);
             }
 
             playerPositions.put(playerId, positions);
         }
+
         return ActionResult.SUCCESS;
     }
 
@@ -90,14 +96,21 @@ public class WandItem extends Item {
         playerUndoData.put(playerId, originalBlocks);
     }
 
+    public static void clearPositions(UUID playerId) {
+        playerPositions.remove(playerId);
+    }
+
     private void executeFillCommand(PlayerEntity player, BlockPos pos1, BlockPos pos2, String blockType) {
         ServerCommandSource source = player.getCommandSource();
-        int maxVolume = 32768; //the fill limit in minecraft is 32x32x32 so this is the max volume that can be filled in one command
+        boolean originalFeedback = source.getWorld().getGameRules().getBoolean(GameRules.SEND_COMMAND_FEEDBACK);
+        source.getWorld().getGameRules().get(GameRules.SEND_COMMAND_FEEDBACK).set(false, source.getServer());
 
-        int x1 = pos1.getX(); //position 1
+        int maxVolume = 32768;
+
+        int x1 = pos1.getX();
         int y1 = pos1.getY();
         int z1 = pos1.getZ();
-        int x2 = pos2.getX(); //position 2
+        int x2 = pos2.getX();
         int y2 = pos2.getY();
         int z2 = pos2.getZ();
 
@@ -108,7 +121,7 @@ public class WandItem extends Item {
         int maxY = Math.max(y1, y2);
         int maxZ = Math.max(z1, z2);
 
-        for (int x = minX; x <= maxX; x += 16) { //loop through the positions in 16x16x16 chunks
+        for (int x = minX; x <= maxX; x += 16) {
             for (int y = minY; y <= maxY; y += 16) {
                 for (int z = minZ; z <= maxZ; z += 16) {
                     int endX = Math.min(x + 15, maxX);
@@ -117,10 +130,10 @@ public class WandItem extends Item {
 
                     int volume = (endX - x + 1) * (endY - y + 1) * (endZ - z + 1);
                     if (volume <= maxVolume) {
-                        String command = String.format("/fill %d %d %d %d %d %d %s", x, y, z, endX, endY, endZ, blockType); //using fill since its the easiest
+                        String command = String.format("/fill %d %d %d %d %d %d %s", x, y, z, endX, endY, endZ, blockType);
                         source.getServer().getCommandManager().executeWithPrefix(source, command);
                     } else {
-                        for (int subX = x; subX <= endX; subX += 8) { //loop through the positions in 8x8x8 chunks
+                        for (int subX = x; subX <= endX; subX += 8) {
                             for (int subY = y; subY <= endY; subY += 8) {
                                 for (int subZ = z; subZ <= endZ; subZ += 8) {
                                     int subEndX = Math.min(subX + 7, endX);
@@ -136,6 +149,8 @@ public class WandItem extends Item {
                 }
             }
         }
+
+        source.getWorld().getGameRules().get(GameRules.SEND_COMMAND_FEEDBACK).set(originalFeedback, source.getServer());
     }
 
     public static void undoFillCommand(ServerPlayerEntity player) {

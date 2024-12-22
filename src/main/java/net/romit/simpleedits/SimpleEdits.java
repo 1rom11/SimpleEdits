@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.romit.simpleedits.item.ModItemGroups;
 import net.romit.simpleedits.item.ModItems;
 import net.romit.simpleedits.util.commands.BlockCommand;
+import net.romit.simpleedits.util.commands.ClearPositionsCommand;
 import net.romit.simpleedits.util.commands.UndoCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,7 @@ public class SimpleEdits implements ModInitializer {
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
 			BlockCommand.register(dispatcher);
 			UndoCommand.register(dispatcher);
+			ClearPositionsCommand.register(dispatcher);
 		});
 
 		LOGGER.info("Initialized!");
