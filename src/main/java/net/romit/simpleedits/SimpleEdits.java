@@ -23,6 +23,7 @@ public class SimpleEdits implements ModInitializer {
 	public void onInitialize() {
 		ModItemGroups.registerItemGroups();
 		ModItems.registerModItems();
+
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
 			BlockCommand.register(dispatcher);
 			UndoCommand.register(dispatcher);

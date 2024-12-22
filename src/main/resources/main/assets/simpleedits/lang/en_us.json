@@ -2,5 +2,8 @@
   "itemgroup.simpleedits.tools" : "Simple Edit Tools",
   "item.simpleedits.chisel": "Chisel",
   "tooltip.simpleedits.chisel": "Makes blocks chiseled!",
-  "tooltip.simpleedits.chisel.shift down": "Some are Stone, Sandstone, Tuff, e.t.c"
+  "item.simpleedits.wand": "Selection Wand",
+  "tooltip.simpleedits.wand": "Replaces blocks in a selection!",
+  "tooltip.simpleedits.wand.shift_down": "Use the /block command to set the block you want to replace with! Use /undo to undo the last action!",
+  "tooltip.simpleedits.chisel.shift_down": "Some are Stone, Sandstone, Tuff, e.t.c"
 }
