@@ -1,0 +1,12 @@
+{
+  "itemgroup.simpleedits.tools" : "Simple Edit Tools",
+  "item.simpleedits.chisel": "Chisel",
+  "tooltip.simpleedits.chisel": "Makes blocks chiseled!",
+  "tooltip.simpleedits.chisel.shift_down": "Some are Stone, Sandstone, Tuff, e.t.c",
+  "item.simpleedits.wand": "Selection Wand",
+  "tooltip.simpleedits.wand": "Replaces blocks in a selection!",
+  "tooltip.simpleedits.wand.shift_down": "Commands: /undo to reset, /block to set block type",
+  "item.simpleedits.waterdrainwand": "Water Drain Wand",
+  "tooltip.simpleedits.waterdrainwand": "Drains water in a selection! Do not use for large bodies!",
+  "tooltip.simpleedits.waterdrainwand.shift_down": "You have to use it on a block beside the water, \n not on the water itself!"
+}

@@ -12,11 +12,12 @@ import net.romit.simpleedits.SimpleEdits;
 public class ModItemGroups {
     public static final ItemGroup TOOLS = Registry.register(Registries.ITEM_GROUP,
             Identifier.of(SimpleEdits.MOD_ID, "tools"),
-            FabricItemGroup.builder().icon(() -> new ItemStack(ModItems.CHISEL))
+            FabricItemGroup.builder().icon(() -> new ItemStack(ModItems.WAND))
                     .displayName(Text.translatable("itemgroup.simpleedits.tools"))
                     .entries((displayContext, entries) -> {
                         entries.add(ModItems.CHISEL);
                         entries.add(ModItems.WAND);
+                        entries.add(ModItems.WATERDRAINERWAND);
                     }).build());
 
     public static void registerItemGroups() {
