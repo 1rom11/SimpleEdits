@@ -38,6 +38,18 @@ SimpleEdits is a Minecraft mod that adds tools for editing blocks in the game. I
 - **Usage**: Use the wand on a block adjacent to water to drain the water in the selected area.
 - **Note**: The wand should only be used for small patches of water! A large body of water may cause lag!
 
+### Chisel
+- **Usage**: Right-click on a block to chisel it. Works with blocks that have a chisel variant (ex. sandstone, tuff, stone).
+- **Note**: The chisel will only work on blocks that have a chisel variant!
+
+### Shape Wand
+- **Usage**: Right Click on a area to fill it with the shape you have selected.
+- **Commands**:
+- `/shape <shape>`: Set the shape for the wand.
+- `/block <block_type>`: Set the block type for the shape.
+- `/radius <radius>`: Set the radius for the shape.
+- `/undoshape`: Undo the last shape fill.
+
 ## Development
 
 ### Prerequisites
