@@ -45,10 +45,10 @@ SimpleEdits is a Minecraft mod that adds tools for editing blocks in the game. I
 ### Shape Wand
 - **Usage**: Right Click on a area to fill it with the shape you have selected.
 - **Commands**:
-- `/shape <shape>`: Set the shape for the wand.
-- `/block <block_type>`: Set the block type for the shape.
-- `/radius <radius>`: Set the radius for the shape.
-- `/undoshape`: Undo the last shape fill.
+  - `/shape <shape>`: Set the shape for the wand.
+  - `/block <block_type>`: Set the block type for the shape.
+  - `/radius <radius>`: Set the radius for the shape.
+  - `/undoshape`: Undo the last shape fill.
 
 ## Development
 
