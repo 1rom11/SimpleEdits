@@ -8,10 +8,16 @@ import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 import net.romit.simpleedits.item.custom.WandItem;
+import net.minecraft.util.Identifier;
 
 public class BlockCommand {
     private static final SuggestionProvider<ServerCommandSource> BLOCK_SUGGESTIONS = (context, builder) -> {
-        return net.minecraft.command.CommandSource.suggestIdentifiers(Registries.BLOCK.getIds(), builder);
+        return net.minecraft.command.CommandSource.suggestMatching(
+            Registries.BLOCK.getIds().stream()
+                .map(Identifier::toString)
+                .map(id -> id.contains(":") ? id.split(":")[1] : id),
+            builder
+        );
     };
 
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
