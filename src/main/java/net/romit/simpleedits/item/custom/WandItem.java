@@ -54,15 +54,16 @@ public class WandItem extends Item {
             if (positions[0] == null) {
                 positions[0] = pos;
                 player.sendMessage(Text.literal("First position set at: " + pos), false);
+                world.playSound(null, pos, SoundEvents.BLOCK_ANVIL_FALL, SoundCategory.BLOCKS, 1.0F, 1.0F);
             } else {
                 positions[1] = pos;
                 player.sendMessage(Text.literal("Second position set at: " + pos), false);
+                world.playSound(null, pos, SoundEvents.BLOCK_ANVIL_FALL, SoundCategory.BLOCKS, 1.0F, 1.0F);
                 String blockType = playerBlockTypes.getOrDefault(playerId, "minecraft:air");
                 storeOriginalBlocks(player, positions[0], positions[1]);
                 executeFillCommand(player, positions[0], positions[1], blockType);
                 positions[0] = null; // Clear positions after filling
                 positions[1] = null;
-                world.playSound(null, pos, SoundEvents.BLOCK_BELL_RESONATE, SoundCategory.BLOCKS, 1.0F, 1.0F);
             }
 
             playerPositions.put(playerId, positions);
@@ -126,24 +127,24 @@ public class WandItem extends Item {
         int maxY = Math.max(y1, y2);
         int maxZ = Math.max(z1, z2);
 
-        for (int x = minX; x <= maxX; x += 16) {
-            for (int y = minY; y <= maxY; y += 16) {
-                for (int z = minZ; z <= maxZ; z += 16) {
-                    int endX = Math.min(x + 15, maxX);
-                    int endY = Math.min(y + 15, maxY);
-                    int endZ = Math.min(z + 15, maxZ);
+        for (int x = minX; x <= maxX; x += 32) {
+            for (int y = minY; y <= maxY; y += 32) {
+                for (int z = minZ; z <= maxZ; z += 32) {
+                    int endY = Math.min(y + 31, maxY);
+                    int endZ = Math.min(z + 31, maxZ);
+                    int endX = Math.min(x + 31, maxX);
 
                     int volume = (endX - x + 1) * (endY - y + 1) * (endZ - z + 1);
                     if (volume <= maxVolume) {
                         String command = String.format("/fill %d %d %d %d %d %d %s", x, y, z, endX, endY, endZ, blockType);
                         source.getServer().getCommandManager().executeWithPrefix(source, command);
                     } else {
-                        for (int subX = x; subX <= endX; subX += 8) {
-                            for (int subY = y; subY <= endY; subY += 8) {
-                                for (int subZ = z; subZ <= endZ; subZ += 8) {
-                                    int subEndX = Math.min(subX + 7, endX);
-                                    int subEndY = Math.min(subY + 7, endY);
-                                    int subEndZ = Math.min(subZ + 7, endZ);
+                        for (int subX = x; subX <= endX; subX += 16) {
+                            for (int subY = y; subY <= endY; subY += 16) {
+                                for (int subZ = z; subZ <= endZ; subZ += 16) {
+                                    int subEndX = Math.min(subX + 15, endX);
+                                    int subEndY = Math.min(subY + 15, endY);
+                                    int subEndZ = Math.min(subZ + 15, endZ);
 
                                     String subCommand = String.format("/fill %d %d %d %d %d %d %s", subX, subY, subZ, subEndX, subEndY, subEndZ, blockType);
                                     source.getServer().getCommandManager().executeWithPrefix(source, subCommand);
