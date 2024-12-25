@@ -17,6 +17,9 @@
   "item.simpleedits.shapewand": "Shape Wand",
   "tooltip.simpleedits.shapewand.tooltip": "Creates shapes in a selection! /shape to see commands /radius to set radius",
 
+  "item.simpleedits.brush": "Brush",
+  "tooltip.simpleedits.brush.tooltip": "Paints blocks in a selection! /brush to configure",
+
 
   "itemgroup.simpleedits.tools" : "Simple Edit Tools"
 }
