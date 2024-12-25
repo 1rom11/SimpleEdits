@@ -2,15 +2,22 @@ package net.romit.simpleedits.util.commands;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.suggestion.SuggestionProvider;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 import net.romit.simpleedits.item.custom.WandItem;
 
 public class BlockCommand {
+    private static final SuggestionProvider<ServerCommandSource> BLOCK_SUGGESTIONS = (context, builder) -> {
+        return net.minecraft.command.CommandSource.suggestIdentifiers(Registries.BLOCK.getIds(), builder);
+    };
+
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
         dispatcher.register(CommandManager.literal("block")
             .then(CommandManager.argument("blockType", StringArgumentType.string())
+                .suggests(BLOCK_SUGGESTIONS)
                 .executes(context -> {
                     String blockType = StringArgumentType.getString(context, "blockType");
                     ServerCommandSource source = context.getSource();
