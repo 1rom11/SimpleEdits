@@ -14,7 +14,7 @@ public class ClearPositionsCommand {
             .executes(context -> {
                 ServerCommandSource source = context.getSource();
                 WandItem.clearPositions(source.getPlayer().getUuid());
-                source.sendFeedback((Supplier<Text>) Text.literal("Positions cleared."), false);
+                source.sendFeedback(() -> Text.of("Positions cleared."), false);
                 return 1;
             })
         );

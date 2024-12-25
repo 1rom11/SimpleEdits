@@ -22,7 +22,6 @@ import java.util.List;
  * This class represents a custom item that allows players to change the state of certain blocks.
  * The item is used by right-clicking on a block, and if the block is a stair or slab, the block state is changed.
  */
-//Shayan wanted this or smth
 
 public class BlockStateChangerItem extends Item {
 

@@ -32,7 +32,7 @@ public class ShapeCommand {
                             ServerCommandSource source = context.getSource();
                             UUID playerUUID = source.getPlayer().getUuid();
                             playerShapes.put(playerUUID, shape);
-                            source.sendFeedback((Supplier<Text>) Text.literal("Shape set to: " + shape), false);
+                            source.sendFeedback(() -> Text.literal("Shape set to: " + shape), false);
                             return 1;
                         })
                 )

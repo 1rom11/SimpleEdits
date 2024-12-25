@@ -23,7 +23,7 @@ public class RadiusCommand {
                             ServerCommandSource source = context.getSource();
                             UUID playerUUID = source.getPlayer().getUuid();
                             playerRadii.put(playerUUID, radius);
-                            source.sendFeedback((Supplier<Text>) Text.literal("Radius set to: " + radius), false);
+                            source.sendFeedback(() -> Text.literal("Radius set to: " + radius), false);
                             return 1;
                         })
                 )

@@ -41,6 +41,7 @@ public class WandItem extends Item {
         playerBlockTypes.put(playerId, blockType);
     }
 
+
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) { //right click to set positions
         PlayerEntity player = context.getPlayer();

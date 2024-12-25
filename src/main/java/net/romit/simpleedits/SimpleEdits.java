@@ -30,6 +30,7 @@ public class SimpleEdits implements ModInitializer {
 			RadiusCommand.register(dispatcher);
 			ShapeCommand.register(dispatcher);
 			UndoShapeCommand.register(dispatcher);
+			BrushCommand.register(dispatcher);
 		});
 
 		LOGGER.info("Initialized!");

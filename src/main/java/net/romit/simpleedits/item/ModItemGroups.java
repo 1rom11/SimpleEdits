@@ -20,6 +20,7 @@ public class ModItemGroups {
                         entries.add(ModItems.WATERDRAINERWAND);
                         entries.add(ModItems.BLOCKSTATECHANGER);
                         entries.add(ModItems.SHAPEWAND);
+                        entries.add(ModItems.BRUSH);
                     }).build());
 
     public static void registerItemGroups() {

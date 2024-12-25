@@ -15,6 +15,7 @@ public class ModItems {
     public static final Item WATERDRAINERWAND = registerItem("waterdrainwand", new WaterDrainerWandItem(new Item.Settings().maxDamage(64)));
     public static final Item BLOCKSTATECHANGER = registerItem("blockstatechanger", new BlockStateChangerItem(new Item.Settings().maxDamage(64)));
     public static final Item SHAPEWAND = registerItem("shapewand", new ShapeItem(new Item.Settings().maxDamage(64)));
+    public static final Item BRUSH = registerItem("brush", new BrushItem(new Item.Settings().maxDamage(64)));
 
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registries.ITEM, Identifier.of(SimpleEdits.MOD_ID, name), item);
@@ -29,6 +30,7 @@ public class ModItems {
             entries.add(WATERDRAINERWAND);
             entries.add(BLOCKSTATECHANGER);
             entries.add(SHAPEWAND);
+            entries.add(BRUSH);
         });
     }
 }
