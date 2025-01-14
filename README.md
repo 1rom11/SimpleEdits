@@ -2,12 +2,17 @@
 
 SimpleEdits is a Minecraft mod that adds tools for editing blocks in the game. It provides a selection wand for replacing blocks, a block state changer for modifying certain block states, and a water drain wand for removing water from an area.
 
+## Video
+
+Tutorial (1.1.0): https://www.youtube.com/watch?v=l2cXye38H4c
+
 ## Features
 
 - **Selection Wand**: Allows players to select and replace blocks within a specified area.
 - **Block State Changer**: Enables players to change the state of certain blocks, such as rotating stairs or changing slab types.
 - **Water Drain Wand**: Drains water in a selected area.
 - **Chisel**: Allows players to chisel blocks that have a chisel variant (ex. sandstone, tuff, stone).
+- **Shape Wand**: Creates shapes based on the one selected (check usage for commands).
 
 ## Installation
 
@@ -43,12 +48,23 @@ SimpleEdits is a Minecraft mod that adds tools for editing blocks in the game. I
 - **Note**: The chisel will only work on blocks that have a chisel variant!
 
 ### Shape Wand
-- **Usage**: Right Click on a area to fill it with the shape you have selected.
+- **Usage**: Right-click on a area to fill it with the shape you have selected.
 - **Commands**:
   - `/shape <shape>`: Set the shape for the wand.
   - `/block <block_type>`: Set the block type for the shape.
   - `/radius <radius>`: Set the radius for the shape.
   - `/undoshape`: Undo the last shape fill.
+
+### Brush
+- **Usage**: Hold Right-click to fill a area
+- **Commands**
+  - `/brush <size> <block_type> <brush_type>`
+    - `<size>` a number ranges from 1 to 10, where 1 is the lowest and 10 is the highest
+      - 1 makes 3^3 area so a 10 make a 30^3 area
+    - `<block_type>` there are suggestions enabled
+    - `<brush_type>` 2 types,
+      1. Cubic, A cubic brush
+      2. Spherical, a spherical brush
 
 ## Development
 
