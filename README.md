@@ -1,6 +1,9 @@
-# SimpleEdits
+# [SimpleEdits](https://modrinth.com/mod/simpleedits)
 
 SimpleEdits is a Minecraft mod that adds tools for editing blocks in the game. It provides a selection wand for replacing blocks, a block state changer for modifying certain block states, and a water drain wand for removing water from an area.
+
+### Modrinth
+https://modrinth.com/mod/simpleedits
 
 ## Video
 
