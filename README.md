@@ -5,6 +5,8 @@ SimpleEdits is a Minecraft mod that adds tools for editing blocks in the game. I
 ### Modrinth
 https://modrinth.com/mod/simpleedits
 
+### [Trello](https://trello.com/invite/b/6786aef65aa5c88bfa2fa5bd/ATTIac28cc51727519b8c2590a6cb777aa4bDDB8E5CD/simple-edits-todo-list)
+
 ## Video
 
 Tutorial (1.1.0): https://www.youtube.com/watch?v=l2cXye38H4c
